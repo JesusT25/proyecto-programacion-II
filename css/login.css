@@ -1,0 +1,222 @@
+/* Aplicar la propiedad border-box y resetear el margen y relleno de los elementos */
+
+html {
+  box-sizing: border-box;
+  font-family: sans-serif;
+  font-size: 62.5%;
+  /* overflow-x: hidden; */
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+/* Main -> Contenido principal de la página */
+
+.main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  margin: 50px auto 50px auto;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  padding-bottom: 0;
+  background-color: white;
+}
+
+.logo {
+  width: 250px;
+}
+
+.titulo {
+  margin-bottom: 20px;
+  font-size: 35px;
+  text-align: center;
+  color: #2074be;
+}
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 60px;
+}
+
+.input {
+  width: 75%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid rgb(185, 182, 182);
+  border-radius: 5px;
+  font-size: 20px;
+}
+
+.mensaje {
+  color: rgb(192, 15, 15);
+  font-size: 15px;
+}
+
+.input[type="submit"] {
+  margin-top: 20px;
+  width: 75%;
+  height: 50px;
+  background-color: rgba(255, 165, 0, 0.94);
+  border-radius: 15px;
+  font-weight: bold;
+  font-size: 20px;
+  border: 2px solid black;
+}
+
+.parrafo {
+  margin-top: 30px;
+  font-size: 18px;
+  width: 80%;
+  text-align: center;
+  color: rgb(77, 76, 76);
+}
+
+.link {
+  color: #2074be;
+}
+
+/* Footer -> pie de página / Parte inferior de la página */
+
+.footer {
+  background-color: rgb(32, 34, 39);
+  color: white;
+}
+
+.footer-h2 {
+  margin-bottom: 2rem;
+  padding: 1.5rem 0 0.5rem 1rem;
+  text-align: center;
+  border-bottom: 0.1rem dashed;
+  font-size: 2.4rem;
+}
+
+.nav-link {
+  color: white;
+  text-decoration: none;
+  font-size: 2.2rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  display: block;
+}
+
+.footer-svg {
+  margin-top: 1rem;
+  margin-left: 1rem;
+  width: 3.5rem;
+  height: 3.5rem;
+}
+
+/* Icono de correo y whatsapp */
+
+.footer-section:last-of-type .footer-div .footer-svg {
+  width: 25px;
+  height: 25px;
+}
+
+/* Contenedor de los iconos de instagram, facebook y telegram */
+.footer-div {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+/* Contenedor de los iconos de correo y whatsapp */
+.footer-section:last-of-type .footer-div {
+  display: flex;
+  align-items: center;
+  padding-bottom: 2rem;
+}
+
+.footer-parrafo {
+  font-size: 4.5vw;
+  padding-top: 1rem;
+}
+
+@media screen and (min-width: 800px) {
+  /* Main -> Contenido principal de la página */
+
+  .main {
+    width: 50%;
+    margin: 50px auto 0 auto;
+    padding-bottom: 20px;
+  }
+
+  .input {
+    width: 60%;
+  }
+
+  .input[type="submit"] {
+    width: 250px;
+    cursor: pointer;
+  }
+
+  .input[type="submit"]:hover {
+    background-color: rgba(255, 140, 0, 0.94);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+  }
+
+  .parrafo {
+    margin-top: 40px;
+  }
+
+  /* Footer -> pie de página / Parte inferior de la página */
+
+  .footer {
+    display: flex;
+    margin-top: 50px;
+  }
+
+  .footer-section {
+    border-right: 1px dashed;
+  }
+
+  .footer-section:first-of-type {
+    width: 30%;
+  }
+
+  .footer-section:nth-of-type(2) {
+    width: 35%;
+  }
+
+  .footer-h2 {
+    padding: 1.5rem 0 1rem 1rem;
+  }
+
+  .footer-section:last-of-type .footer-h2 {
+    padding-left: 10rem;
+  }
+
+  .nav-link {
+    margin-top: 0;
+    margin-bottom: 1rem;
+  }
+
+  /* Icono de correo y whatsapp */
+
+  .footer-section:last-of-type .footer-div .footer-svg {
+    width: 35px;
+    height: 35px;
+  }
+
+  /* Contenedor de los iconos de correo y whatsapp */
+  .footer-section:last-of-type .footer-div {
+    width: 450px;
+  }
+
+  .footer-parrafo {
+    font-size: 20px;
+  }
+}

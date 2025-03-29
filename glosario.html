@@ -1,0 +1,92 @@
+<!-- 
+ 
+***
+session_start();  -> crea una sesión o reanuda la actual. Esto permite utilizar variables de sesión dentro del archivo php, estas variables se declaran usando $_SESSION. Lo util de estas
+variables es que funcionan como variables globales en multiples archivos php.
+
+Ejemplo: $_SESSION['nombre'] = "Alice";
+echo $_SESSION['nombre'];
+
+***
+$_SESSION['last_page'] = $_SERVER['REQUEST_URI']; -> al utilizar $_SERVER['REQUEST_URI'] se obtiene la url de la pagina actual, la cual se almacena en la variable $_SESSION['last_page']
+esto permite utilizarlo en otro fragmento de codigo para redirigir al usuario a la pagina anterior.
+
+***
+isset() -> Permite comprobar si una variable esta definida
+
+***
+El operador ternario (? :) actúa como un if-else en una sola línea.
+
+Por ejemplo:
+
+$last_page = isset($_SESSION['last_page']) ? $_SESSION['last_page'] : 'index.php';
+
+Esto funciona así:
+
+if(isset($_SESSION['last_page'])) {
+  $last_page = $_SESSION['last_page'];
+}
+else {
+  $last_page = index.php
+}
+
+***
+mysqli_connect -> Realiza una conexión a la BD
+
+***
+mysqli_query -> Ejecuta una consulta SQL en una BD
+
+por ejemplo:
+
+$correos = mysqli_query($conexion, $verificarCorreo); -> Ejecuta la consulta SQL ($verificarCorreo) sobre la conexión a la base de datos ($conexion).
+
+***
+mysqli_num_rows -> Se utiliza para obtener el número de filas en un resultado devuelto por una consulta SQL.
+
+***
+mysqli_fetch_assoc() -> Recupera una fila específica de datos como un array asociativo
+
+Ejemplo de un array asociativo:
+
+$usuario = [
+"nombre" => "Alice",
+"edad" => 25,
+"correo" => "alice@example.com"
+];
+
+***
+intval() -> Convierte un valor en un numero entero.
+
+***
+empty() / !empty() - > La función empty() devuelve true si la variable no esta definida o tiene un valor vacio como "", caso contrario con el operador de negación !, lo que hara es que devolvera true si la variable esta definida con un valor valido
+
+Ejemplo:
+
+if (!empty($email)) {
+  Esto devuelve true siempre que la variable $email este definida
+}
+
+***
+header("Cache-Control: no-cache, must-revalidate") -> Este encabezado informa al navegador que debe consultar al servidor para validar la página antes de usar cualquier copia
+almacenada en caché.
+
+***
+session_cache_limiter('private_no_expire') -> Esta función configura el comportamiento de la caché para las sesiones en PHP.
+
+***
+number_format() -> Sirve para dar formatos a numeros
+
+Ejemplo:
+
+number_format($numero,2,'.') =
+
+$numero - Variable a formatear
+2 - Numero de decimales a mostrar
+'.' - Separador
+
+***
+onclick="window.print()" -> Abre una pagina para imprimir o guardar como pdf
+
+PD: <button onclick="window.print()">Imprimir</button> -> para la factura
+
+-->

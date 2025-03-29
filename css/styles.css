@@ -1,0 +1,329 @@
+/* Aplicar la propiedad border-box y resetear el margen y relleno de los elementos */
+
+html {
+  box-sizing: border-box;
+  font-family: sans-serif;
+  font-size: 62.5%;
+  /* overflow-x: hidden; */
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+/* Header -> Encabezado / Parte superior de la página */
+
+.header {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 90px;
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 1;
+}
+
+.header-logo {
+  width: 150px;
+  height: 100px;
+}
+
+.header-icono {
+  width: 50px;
+  height: 35px;
+}
+
+.usuario {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.nombre-usuario {
+  font-size: 16px;
+  font-weight: bold;
+  margin-left: 10px;
+  text-align: center;
+}
+
+.boton-desconexion {
+  width: 20px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+/* Main -> Contenido principal de la página */
+
+.main-img {
+  width: 100vw;
+  height: 220px;
+  display: block;
+}
+
+.main-h1,
+.main-h2 {
+  font-size: 24px;
+  text-align: center;
+  margin: 30px 0;
+}
+
+.main-h2 {
+  margin-top: 40px;
+}
+
+.carrusel {
+  display: flex;
+  /* flex-wrap: nowrap; */
+  height: 200px;
+  width: 100%;
+  overflow: scroll;
+}
+
+.carrusel-link {
+  text-decoration: none;
+  color: black;
+}
+
+.elemento {
+  margin: 0 30px;
+  width: 110px;
+  height: 100px;
+}
+
+.carrusel-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.carrusel-h3 {
+  text-align: center;
+  font-size: 14px;
+}
+
+.carrusel-p-descripcion {
+  margin-top: 3px;
+  font-size: 10px;
+  text-align: center;
+}
+
+.carrusel-p-precio {
+  text-align: center;
+  margin-top: 3px;
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.ofertas {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.descuento {
+  color: rgb(154, 152, 152);
+  text-decoration: line-through;
+}
+
+.pasos-comprar {
+  margin-top: 30px;
+  width: 100%;
+}
+
+.pasos-comprar img {
+  width: 100%;
+}
+
+/* Footer -> pie de página / Parte inferior de la página */
+
+.footer {
+  background-color: rgb(32, 34, 39);
+  color: white;
+}
+
+.footer-h2 {
+  margin-bottom: 2rem;
+  padding: 1.5rem 0 0.5rem 1rem;
+  text-align: center;
+  border-bottom: 0.1rem dashed;
+  font-size: 2.4rem;
+}
+
+.nav-link {
+  color: white;
+  text-decoration: none;
+  font-size: 2.2rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  display: block;
+}
+
+.footer-svg {
+  margin-top: 1rem;
+  margin-left: 1rem;
+  width: 3.5rem;
+  height: 3.5rem;
+}
+
+/* Icono de correo y whatsapp */
+
+.footer-section:last-of-type .footer-div .footer-svg {
+  width: 25px;
+  height: 25px;
+}
+
+/* Contenedor de los iconos de instagram, facebook y telegram */
+.footer-div {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+/* Contenedor de los iconos de correo y whatsapp */
+.footer-section:last-of-type .footer-div {
+  display: flex;
+  align-items: center;
+  padding-bottom: 2rem;
+}
+
+.footer-parrafo {
+  font-size: 4.5vw;
+  padding-top: 1rem;
+}
+
+@media screen and (min-width: 800px) {
+  /* Header -> Encabezado / Parte superior de la página */
+
+  .header {
+    height: 100px;
+    padding: 0 20px;
+  }
+
+  .header-logo {
+    width: 180px;
+    height: 150px;
+  }
+
+  .header-icono {
+    width: 100px;
+    height: 60px;
+    cursor: pointer;
+  }
+
+  .nombre-usuario {
+    font-size: 24px;
+  }
+
+  .boton-desconexion {
+    width: 25px;
+    margin-left: 20px;
+  }
+
+  /* Main -> Contenido principal de la página */
+
+  .main-img {
+    height: 600px;
+    margin-bottom: 20px;
+  }
+
+  .main-link {
+    cursor: pointer;
+  }
+
+  .main-h1,
+  .main-h2 {
+    font-size: 32px;
+    margin: 80px 0;
+  }
+
+  .carrusel {
+    height: 250px;
+    overflow: auto;
+    gap: 60px;
+  }
+
+  .carrusel:last-of-type {
+    gap: 55px;
+    margin-left: 10px;
+  }
+
+  .carrusel-link {
+    width: 200px;
+  }
+
+  .elemento {
+    width: 160px;
+    height: 150px;
+  }
+
+  .carrusel-h3 {
+    font-size: 20px;
+  }
+
+  .carrusel-p-descripcion {
+    font-size: 16px;
+  }
+
+  .carrusel-p-precio {
+    font-size: 16px;
+  }
+
+  .pasos-comprar {
+    padding-top: 50px;
+    width: 97%;
+    margin: 0 auto;
+  }
+
+  /* Footer -> pie de página / Parte inferior de la página */
+
+  .footer {
+    display: flex;
+    margin-top: 50px;
+  }
+
+  .footer-section {
+    border-right: 1px dashed;
+  }
+
+  .footer-section:first-of-type {
+    width: 30%;
+  }
+
+  .footer-section:nth-of-type(2) {
+    width: 35%;
+  }
+
+  .footer-h2 {
+    padding: 1.5rem 0 1rem 1rem;
+  }
+
+  .footer-section:last-of-type .footer-h2 {
+    padding-left: 10rem;
+  }
+
+  .nav-link {
+    margin-top: 0;
+    margin-bottom: 1rem;
+  }
+
+  /* Icono de correo y whatsapp */
+
+  .footer-section:last-of-type .footer-div .footer-svg {
+    width: 35px;
+    height: 35px;
+  }
+
+  /* Contenedor de los iconos de correo y whatsapp */
+  .footer-section:last-of-type .footer-div {
+    width: 450px;
+  }
+
+  .footer-parrafo {
+    font-size: 20px;
+  }
+}
