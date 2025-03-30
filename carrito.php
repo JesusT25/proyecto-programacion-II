@@ -11,7 +11,9 @@ $_SESSION['last_page'] = $_SERVER['REQUEST_URI'];
 
 //Variables
 $nombre = $apellido = $email = $cedula = $telefono = $direccion = $ciudad = $codigo_postal = "";
-$nombre_articulo = $fuente = $precio = $subtotal = $iva = $total = "";
+$nombre_articulo = $fuente = $precio = $subtotal = $iva = $total = $mensaje = "";
+$usuario_id = NULL;
+$producto_id = "";
 
 $email = isset($_SESSION['email']) ? $_SESSION['email'] : "";
 $estado = isset($_POST['estado']) ? $_POST['estado'] : "";
@@ -20,34 +22,96 @@ $metodo_pago = isset($_POST['metodo-pago']) ? $_POST['metodo-pago'] : "";
 
 $cantidad = isset($_POST['cantidad']) ? intval($_POST['cantidad']) : (isset($_SESSION['valor']) ? $_SESSION['valor'] : 1);
 
-
 //Conexion a la BD
 $conexion = mysqli_connect("localhost", "root", "", "nexusfit");
 
-//Pasos para obtener el valor de nombre y apellido (tabla usuarios)
+//Pasos para obtener el valor de nombre, apellido y el id correspondiente (tabla usuarios)
 if (!empty($email)) {
-  $consulta = $conexion->query("SELECT nombre, apellido FROM usuarios WHERE email = '$email'");
+  $consulta = $conexion->query("SELECT id, nombre, apellido FROM usuarios WHERE email = '$email'");
 
   if ($consulta->num_rows > 0) {
     $fila = $consulta->fetch_assoc();
+    $usuario_id = $fila['id'];
     $nombre = $fila['nombre'];
     $apellido = $fila['apellido'];
+
+    $_SESSION['nombre'] = $nombre;
+    $_SESSION['apellido'] = $apellido;
   }
 }
 
 //Condionales para obtener el nombre, precio del producto y la imagen del mismo
 if (isset($_SESSION['articulo'])) {
 
-  if ($_SESSION['articulo'] == "Balon-Futbol-Qatar-2022") {
+  if ($_SESSION['articulo'] == "Termo-Cubbit") {
+    $nombre_articulo = "Termo térmico cubitt 800 ml";
+    $fuente = "images/productos/termo-cubitt-800ml/termo-cubitt-800ml.png";
+    $precio = 8.00;
+    $producto_id = 1;
+  }
+  //
+  else if ($_SESSION['articulo'] == "Zapatos-RS-Moon") {
+    $nombre_articulo = "Zapatos Deportivos Rs Moon";
+    $fuente = "images/productos/zapatos-deportivos-rs-moon/zapatos-deportivos-rs-moon.webp
+    ";
+    $precio = 40.00;
+    $producto_id = 2;
+  }
+  // 
+  else if ($_SESSION['articulo'] == "Balon-Futbol-Qatar-2022") {
     $nombre_articulo = "Balón De Futbol adidas Mundial Qatar 2022 N°5";
     $fuente = "images/productos/balon-futbol-qatar/balon-futbol-qatar.webp";
-    $precio = 30;
+    $precio = 30.00;
+    $producto_id = 3;
+  }
+  //
+  else if ($_SESSION['articulo'] == "Cuerda-Saltar") {
+    $nombre_articulo = "Cuerda de saltar para ejercicio";
+    $fuente = "images/productos/cuerda-de-saltar/cuerda-de-saltar.png";
+    $precio = 5.99;
+    $producto_id = 4;
+  }
+  //
+  else if ($_SESSION['articulo'] == "Cronometro-Digital") {
+    $nombre_articulo = "Cronómetro Digital Deportivo";
+    $fuente = "images/productos/cronometro-digital/cronometro-digital.webp";
+    $precio = 4.99;
+    $producto_id = 5;
   }
   //
   else if ($_SESSION['articulo'] == "Casco-Ciclismo") {
     $nombre_articulo = "Casco Ciclismo Ac Bikes";
     $fuente = "images/productos/casco-ciclismo/casco-ciclismo.webp";
     $precio = 15.99;
+    $producto_id = 6;
+  }
+  //
+  else if ($_SESSION['articulo'] == "Traje-De-Baño-Dama") {
+    $nombre_articulo = "Traje de Baño para Dama";
+    $fuente = "images/productos/traje-de-baño-dama/traje-de-baño-dama.webp";
+    $precio = 10.00;
+    $producto_id = 7;
+  }
+  //
+  else if ($_SESSION['articulo'] == "Zapatos-Skechers-Dama") {
+    $nombre_articulo = "Zapatos deportivos Skechers Element para Dama";
+    $fuente = "images/productos/skechers-element-dama/skechers-element-dama.webp";
+    $precio = 44.99;
+    $producto_id = 8;
+  }
+  //
+  else if ($_SESSION['articulo'] == "Saco-Boxeo") {
+    $nombre_articulo = "Saco de boxeo Everlast 40 libras";
+    $fuente = "images/productos/saco-boxeo/saco-boxeo.jpg";
+    $precio = 75.98;
+    $producto_id = 9;
+  }
+  //
+  else if ($_SESSION['articulo'] == "Zapatos-Adidas-Duramo") {
+    $nombre_articulo = "Zapatos deportivos adidas duramo";
+    $fuente = "images/productos/zapatos-adidas-duramo/zapatos-adidas-duramo.webp";
+    $precio = 44.99;
+    $producto_id = 10;
   }
 }
 
@@ -66,7 +130,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   $cantidad = $_POST['cantidad'];
 }
 
-// Calcular precio
+// Boton Calcular precio
 if (isset($_POST['calcular-precio'])) {
   $cantidad = isset($cantidad) ? (int)$cantidad : 1;
   $precio = isset($precio) ? (float)$precio : 0;
@@ -74,9 +138,67 @@ if (isset($_POST['calcular-precio'])) {
   $subtotal = $precio * $cantidad;
   $iva = $subtotal * 0.16;
   $total = $subtotal + $iva;
+
+  $subtotal = number_format($subtotal, 2, '.');
+  $iva = number_format($iva, 2, '.');
+  $total = number_format($total, 2, '.');
+
+  $_SESSION['subtotal'] = $subtotal;
+  $_SESSION['iva'] = $iva;
+  $_SESSION['total'] = $total;
+  $_SESSION['precio_calculado'] = true;
 }
 
+// Botón Realizar Pedido
+if (isset($_POST['realizar-pedido'])) {
+
+  if (isset($_SESSION['precio_calculado']) && $_SESSION['precio_calculado'] === true) {
+
+    $usuario_id_sql = is_null($usuario_id) ? "NULL" : $usuario_id;
+
+    if (is_null($usuario_id)) {
+      $nombre = isset($_POST['nombre']) ? $_POST['nombre'] : "";
+      $apellido = isset($_POST['apellido']) ? $_POST['apellido'] : "";
+      $email = isset($_POST['email']) ? $_POST['email'] : "";
+    }
+    //
+    else {
+      $nombre = $apellido = $email = "NULL";
+    }
+
+    if ($metodo_envio === 'Entrega_Local' && $estado !== 'Anzoátegui') {
+      $mensaje = "Error: El envío gratis solo está disponible para el estado Anzoátegui.";
+    }
+    //
+    else {
+      $subtotal = $_SESSION['subtotal'];
+      $iva = $_SESSION['iva'];
+      $total = $_SESSION['total'];
+
+      $ingresar = "INSERT INTO pedidos (usuario_id, nombre, apellido, email, cedula, telefono, direccion, ciudad, codigo_postal, estado, metodo_envio, metodo_pago, producto_id, cantidad, precio_unidad, subtotal, iva, total) VALUES ($usuario_id_sql, '$nombre', '$apellido', '$email', '$cedula', '$telefono', '$direccion', '$ciudad', '$codigo_postal', '$estado', '$metodo_envio', '$metodo_pago', $producto_id, $cantidad, $precio, $subtotal, $iva, $total)";
+
+      $insertar_datos = mysqli_query($conexion, $ingresar);
+
+      if ($insertar_datos) {
+        $mensaje = "Pedido registrado exitosamente.";
+        unset($_SESSION['subtotal'], $_SESSION['iva'], $_SESSION['total'], $_SESSION['precio_calculado']);
+
+        $cedula = $telefono = $direccion = $ciudad = $codigo_postal = $estado = $metodo_envio = $metodo_pago = $subtotal = $iva = $total = "";
+      }
+      //
+      else {
+        $mensaje = "Error al registrar el pedido: " . mysqli_error($conexion);
+      }
+    }
+  }
+  //
+  else {
+    $mensaje = "Nota: debes calcular el precio antes de realizar el pedido.";
+  }
+}
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="es">
@@ -90,6 +212,7 @@ if (isset($_POST['calcular-precio'])) {
 </head>
 
 <body>
+
   <header class="header">
     <a class="header-link" href="index.php"><img class="header-logo" src="images/logo.svg" alt="logo"></a>
 
@@ -136,16 +259,16 @@ if (isset($_POST['calcular-precio'])) {
 
     <form class="formulario" method="post">
       <h2 class="subtitulo">Contacto</h2>
-      <input type="text" name="nombre" value="<?php echo $nombre ?>" placeholder="Nombre" required>
-      <input type="text" name="apellido" value="<?php echo $apellido ?>" placeholder="Apellido" required>
-      <input type="email" name="email" value="<?php echo $email ?>" placeholder="Correo electronico" required>
+      <input type="text" name="nombre" value="<?php echo (isset($_POST['nombre']) ? $_POST['nombre'] : $nombre); ?>" placeholder="Nombre" required>
+      <input type="text" name="apellido" value="<?php echo (isset($_POST['apellido']) ? $_POST['apellido'] : $apellido); ?>" placeholder="Apellido" required>
+      <input type="email" name="email" value="<?php echo (isset($_POST['email']) ? $_POST['email'] : $email); ?>" placeholder="Correo electronico" required>
       <input type="text" name="cedula" value="<?php echo $cedula ?>" placeholder="Cedula" required>
       <input type="text" name="telefono" value="<?php echo $telefono ?>" placeholder="Telefono" required>
 
       <hr>
 
       <h2 class="subtitulo">Dirección de entrega</h2>
-      <textarea name="direccion" placeholder="Sector, Calle, Casa, etc."><?php echo $direccion ?></textarea>
+      <textarea name="direccion" placeholder="Sector, Calle, Casa, etc." required><?php echo $direccion ?></textarea>
       <input type="text" name="ciudad" value="<?php echo $ciudad ?>" placeholder="Ciudad" required>
       <input type="text" name="codigo_postal" value="<?php echo $codigo_postal ?>" placeholder="Código Postal" required>
       <select name="estado" required>
@@ -182,8 +305,8 @@ if (isset($_POST['calcular-precio'])) {
       <h2 class="subtitulo">Métodos de envío</h2>
       <div class="contenedor">
         <label class="radio-contenedor" for="envio-anzoategui">
-          <input id="envio-anzoategui" name="envio" value="Anzoátegui"
-            <?php echo ($metodo_envio == "Anzoátegui") ? 'checked' : ''; ?> type="radio" checked><span class="alinear-derecha">Anzoátegui</span>
+          <input id="envio-anzoategui" name="envio" value="Entrega_Local"
+            <?php echo ($metodo_envio == "Entrega_Local") ? 'checked' : ''; ?> type="radio" checked><span class="alinear-derecha">Anzoátegui</span>
         </label>
         <p class="texto">-</p>
         <p class="texto">Envío gratis</p>
@@ -191,8 +314,8 @@ if (isset($_POST['calcular-precio'])) {
 
       <div class="contenedor">
         <label class="radio-contenedor" for="envio-otro-estado">
-          <input id="envio-otro-estado" name="envio" value="Otro"
-            <?php echo ($metodo_envio == "Otro") ? 'checked' : ''; ?> type="radio"><span class="alinear-derecha">
+          <input id="envio-otro-estado" name="envio" value="Envio_MRW"
+            <?php echo ($metodo_envio == "Envio_MRW") ? 'checked' : ''; ?> type="radio"><span class="alinear-derecha">
             Otros Estados</span>
         </label>
         <p class="texto">-</p>
@@ -238,7 +361,7 @@ if (isset($_POST['calcular-precio'])) {
       <?php
       if (!isset($_POST[$nombre_articulo])) {
         if (!empty($fuente)) {
-          echo '<img class="imagen-articulo" src="' . $fuente . '" alt="Imagen del artículo">';
+          echo '<img class="imagen-articulo saco-boxeo" src="' . $fuente . '" alt="Imagen del artículo">';
         }
       }
       ?>
@@ -280,14 +403,16 @@ if (isset($_POST['calcular-precio'])) {
           <p>Artículo: <?php echo ($nombre_articulo); ?></p>
           <p>Cantidad: <?php echo ($cantidad); ?></p>
           <hr>
-          <p>Subtotal: $<?php echo number_format($subtotal, 2, '.'); ?></p>
-          <p>IVA (16%): $<?php echo number_format($iva, 2, '.'); ?></p>
-          <p>Total a pagar: $<?php echo number_format($total, 2, '.'); ?></p>
+          <p>Subtotal: <?php echo number_format($subtotal, 2, '.'); ?>$</p>
+          <p>IVA (16%): <?php echo number_format($iva, 2, '.'); ?>$</p>
+          <p>Total a pagar: <?php echo number_format($total, 2, '.'); ?>$</p>
           <button onclick="window.print()">Imprimir</button>
         </section>
       <?php endif; ?>
 
       <input type="submit" name="realizar-pedido" value="Realizar pedido">
+
+      <h3 class="mensaje"><?php echo $mensaje ?></h3>
 
     </form>
 

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 29, 2025 at 03:09 PM
+-- Generation Time: Mar 31, 2025 at 01:26 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,6 +20,45 @@ SET time_zone = "+00:00";
 --
 -- Database: `nexusfit`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `pedidos`
+--
+
+CREATE TABLE `pedidos` (
+  `id` int(11) NOT NULL,
+  `usuario_id` int(11) DEFAULT NULL,
+  `producto_id` int(20) NOT NULL,
+  `nombre` varchar(50) DEFAULT NULL,
+  `apellido` varchar(50) DEFAULT NULL,
+  `email` varchar(50) DEFAULT NULL,
+  `cedula` varchar(20) NOT NULL,
+  `telefono` varchar(20) NOT NULL,
+  `direccion` text NOT NULL,
+  `ciudad` varchar(50) NOT NULL,
+  `codigo_postal` varchar(10) NOT NULL,
+  `estado` varchar(50) NOT NULL,
+  `metodo_envio` varchar(30) NOT NULL,
+  `metodo_pago` varchar(30) NOT NULL,
+  `cantidad` int(11) NOT NULL,
+  `precio_unidad` decimal(10,2) NOT NULL,
+  `subtotal` decimal(10,2) NOT NULL,
+  `iva` decimal(10,2) NOT NULL,
+  `total` decimal(10,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `pedidos`
+--
+
+INSERT INTO `pedidos` (`id`, `usuario_id`, `producto_id`, `nombre`, `apellido`, `email`, `cedula`, `telefono`, `direccion`, `ciudad`, `codigo_postal`, `estado`, `metodo_envio`, `metodo_pago`, `cantidad`, `precio_unidad`, `subtotal`, `iva`, `total`) VALUES
+(1, 1, 1, 'NULL', 'NULL', 'NULL', 'V30.000.000', '0412-1234567', 'Sector 1, Calle 2, Casa 3', 'Barcelona', '6001', 'Anzoátegui', 'Entrega_Local', 'pago-movil', 1, 8.00, 8.00, 1.28, 9.28),
+(2, 1, 5, 'NULL', 'NULL', 'NULL', 'V30.000.000', '0412-1234567', 'Sector 1, Calle 2, Casa 3', 'Barcelona', '6001', 'Anzoátegui', 'Entrega_Local', 'paypal', 3, 4.99, 14.97, 2.40, 17.37),
+(3, NULL, 7, 'Isabel', 'Rivera', 'isabel@gmail.com', 'V27.000.000', '0412-1234567', 'Casa Nro 123', 'Margarita', '1234', 'Nueva Esparta', 'Envio_MRW', 'tarjeta', 1, 10.00, 10.00, 1.60, 11.60),
+(4, NULL, 8, 'Camila', 'Mendoza', 'camila@gmail.com', 'V25.000.000', '0412-1234567', 'Sector ejemplo, calle 7, casa #19', 'Valencia', '12345', 'Carabobo', 'Envio_MRW', 'paypal', 2, 44.99, 89.98, 14.40, 104.38),
+(5, 2, 4, 'NULL', 'NULL', 'NULL', 'V28.123.456', '0412-1234567', 'Sector 4, Calle 3, Casa 2', 'Mérida', '5115', 'Mérida', 'Envio_MRW', 'pago-movil', 2, 5.99, 11.98, 1.92, 13.90);
 
 -- --------------------------------------------------------
 
@@ -71,11 +110,20 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id`, `nombre`, `apellido`, `email`, `contraseña`) VALUES
-(1, 'Rafael', 'Martínez', 'rafael@gmail.com', 'Prueba.123');
+(1, 'Rafael', 'Martínez', 'rafael@gmail.com', 'Prueba.123'),
+(2, 'Javier', 'Sánchez', 'javier@gmail.com', 'Ejemplo*2025');
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `pedidos`
+--
+ALTER TABLE `pedidos`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `usuario_id` (`usuario_id`),
+  ADD KEY `producto_id` (`producto_id`);
 
 --
 -- Indexes for table `productos`
@@ -95,6 +143,12 @@ ALTER TABLE `usuarios`
 --
 
 --
+-- AUTO_INCREMENT for table `pedidos`
+--
+ALTER TABLE `pedidos`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
 -- AUTO_INCREMENT for table `productos`
 --
 ALTER TABLE `productos`
@@ -104,7 +158,18 @@ ALTER TABLE `productos`
 -- AUTO_INCREMENT for table `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `pedidos`
+--
+ALTER TABLE `pedidos`
+  ADD CONSTRAINT `pedidos_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `pedidos_ibfk_2` FOREIGN KEY (`producto_id`) REFERENCES `productos` (`id_producto`) ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

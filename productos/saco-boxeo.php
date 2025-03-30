@@ -1,16 +1,29 @@
 <?php
+//Evita el error: Confirm Form Resubmission 
+header("Cache-Control: no-cache, must-revalidate");
+session_cache_limiter('private_no_expire');
+
+//Inicia una sesion
 session_start();
+
+$_SESSION['articulo'] = $_SESSION['valor'] = "";
 
 // Guarda la página actual
 $_SESSION['last_page'] = $_SERVER['REQUEST_URI'];
 
-$valor = isset($_POST['valor']) ? intval($_POST['valor']) : 1;
+$_SESSION['valor'] = isset($_POST['valor']) ? intval($_POST['valor']) : 1;
 
+//Comprobar si la solicitud se realizó con el metodo POST
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-  if (isset($_POST['menos']) && $valor > 1) {
-    $valor--;
-  } else if (isset($_POST['mas']) && $valor < 10) {
-    $valor++;
+  if (isset($_POST['menos']) && $_SESSION['valor'] > 1) {
+    $_SESSION['valor']--;
+  } else if (isset($_POST['mas']) && $_SESSION['valor'] < 10) {
+    $_SESSION['valor']++;
+  }
+
+  if (isset($_POST['Saco-Boxeo'])) {
+    $_SESSION['articulo'] = "Saco-Boxeo";
+    header("Location: ../carrito.php");
   }
 }
 
@@ -94,7 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </svg>
       </button>
 
-      <input class="cantidad" type="number" name="valor" value="<?php echo $valor ?>" min="1" max="10" readonly>
+      <input class="cantidad" type="number" name="valor" value="<?php echo $_SESSION['valor'] ?>" min="1" max="10" readonly>
 
       <!-- Icono " + " -->
       <button class="btn" type="submit" name="mas">
@@ -106,7 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </svg>
       </button>
 
-      <button class="boton" type="submit">Agregar al carrito</button>
+      <button class="boton" name="Saco-Boxeo" type="submit">Agregar al carrito</button>
 
     </form>
 

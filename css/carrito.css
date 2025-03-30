@@ -108,7 +108,13 @@ textarea {
 
 .imagen-articulo {
   width: 125px;
+  height: 125px;
+  object-fit: contain;
 }
+
+/* .saco-boxeo {
+  height: 150px;
+} */
 
 .formulario hr {
   border-bottom: 1px solid rgb(215, 212, 212);
@@ -414,6 +420,10 @@ textarea {
 
   #calcular-precio:hover {
     background-color: rgb(61, 135, 200);
+  }
+
+  .mensaje {
+    font-size: 18px;
   }
 
   /* Footer -> pie de página / Parte inferior de la página */
