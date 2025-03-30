@@ -232,6 +232,13 @@ textarea {
   text-align: center;
 }
 
+.mensaje {
+  margin-top: 10px;
+  line-height: 1.5;
+  font-size: 14px;
+  text-align: center;
+}
+
 /* Estilos para la factura */
 
 .factura {
@@ -423,6 +430,7 @@ textarea {
   }
 
   .mensaje {
+    margin-top: 0;
     font-size: 18px;
   }
 
