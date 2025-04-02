@@ -169,11 +169,24 @@ if (isset($_POST['realizar-pedido'])) {
     if ($metodo_envio === 'Entrega_Local' && $estado !== 'Anzoátegui') {
       $mensaje = "Error: El envío gratis solo está disponible para el estado Anzoátegui.";
     }
+
+    else if ($metodo_envio === 'Envio_MRW' && $estado == 'Anzoátegui') {
+      $mensaje = "Error: En Anzoátegui el envío es gratis. Usa 'Envío gratis' en vez de MRW.";
+    }
+
     //
     else {
       $subtotal = $_SESSION['subtotal'];
       $iva = $_SESSION['iva'];
       $total = $_SESSION['total'];
+
+      $subtotal = $precio * $cantidad;
+      $iva = $subtotal * 0.16;  
+      $total = $subtotal + $iva;
+
+      $subtotal = number_format($subtotal, 2, '.');
+      $iva = number_format($iva, 2, '.');
+      $total = number_format($total, 2, '.');
 
       $ingresar = "INSERT INTO pedidos (usuario_id, nombre, apellido, email, cedula, telefono, direccion, ciudad, codigo_postal, estado, metodo_envio, metodo_pago, producto_id, cantidad, precio_unidad, subtotal, iva, total) VALUES ($usuario_id_sql, '$nombre', '$apellido', '$email', '$cedula', '$telefono', '$direccion', '$ciudad', '$codigo_postal', '$estado', '$metodo_envio', '$metodo_pago', $producto_id, $cantidad, $precio, $subtotal, $iva, $total)";
 
